@@ -9,7 +9,8 @@ import java.util.Scanner;
 import java.util.stream.IntStream;
 
 /**
- *
+ *  Realizar la tabla de multiplicar de un numero entre 0 y 10.
+ * 
  * @author ezubia
  */
 public class Problema27 {
