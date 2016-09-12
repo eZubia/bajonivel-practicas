@@ -7,29 +7,29 @@ package pkg50problemas;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import static pkg50problemas.Problema44.borrarRegistro;
 
 /**
  *
- * Hacer un programa que nos permita dar bajas en el fichero DATOS.DAT.
+ * Tenemos el fichero secuencial DATOS.DAT cuyos campos son: DNI, NOMBRE, 
+ * APELLIDOS, DIRECCION y PROVINCIA. Listar por impresora todos los registros 
+ * cuya provincia sea una determinada que introduciremos por teclado.
  * 
  * @author ezubia
  */
-public class Problema44 {
+public class Problema46 {
     
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args) throws IOException {
         Path file = Paths.get("datos.dat");
         FileInputStream fin = new FileInputStream(file.toString()); 
         DataInputStream din = new DataInputStream(fin);  
@@ -41,31 +41,27 @@ public class Problema44 {
             registros.add(s);
             s= br.readLine();
         }
-        borrarRegistro(file, registros);
+        listarRegistro(registros);
         System.out.println("Termino de borrado.");
     }
     
-    public static void borrarRegistro(Path file, List<String> registros) throws IOException{
-        String indiceBorrar = null;
+    public static void listarRegistro(List<String> registros) throws IOException{
+        Integer indiceModificar = null;
         String continuar = "s";
         while(registros.size()>0 && (continuar.equals("s") || continuar.equals("S"))){
-
-            System.out.println("Introduzca el DNI que quiere eliminar:");
+            System.out.println("Introduzca la provincia del los registros a mostrar:");
             Scanner in = new Scanner(System.in);
-            String dniEliminar = in.nextLine();
+            String provincia = in.nextLine();
+            System.out.println("DNI \tNombre \tAPELLIDOS \tDIRECCION \tPROVINCIA");
+            StringBuilder sout = new StringBuilder();
             for (String registro : registros) {
                 List<String> valores = Arrays.asList(registro.split(", "));
-                if(dniEliminar.equals(valores.get(0))){
-                    indiceBorrar = registro;
+                if(provincia.equals(valores.get(4))){
+                    valores.forEach(valor-> sout.append(String.format("%s \t", valor)));
+                    sout.append("\n");
                 }
             }
-            if(indiceBorrar!=null){
-                registros.remove(indiceBorrar);
-            } else {
-                System.out.println("No se encontro ningun registro con ese DNI.");
-            }
-            Files.delete(file);
-            Files.write(file, registros);
+            System.out.println(sout.toString());
             System.out.println("Desea continuar? s=Continuar, n=Salir");
             continuar=in.nextLine();
         }

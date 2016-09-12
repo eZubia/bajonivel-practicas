@@ -38,7 +38,6 @@ public class Problema45 {
             String s = br.readLine();
             while(s!=null){
                 registros.add(s);
-                System.out.println("registros.size() = " + registros.size());
                 s= br.readLine();
             }
             modificarRegistro(file, registros);
